@@ -20,7 +20,9 @@ length = 0
 
 
 class Text:
-
+    '''
+    Text based content generation.
+    '''
     def number(length):
         '''
         length = how many numbers to return
@@ -40,8 +42,20 @@ class Text:
         vals = "HI"
         return
 
-    def words():
+    def word():
         return
 
-    def paragraphs():
+    def adjective():
+        return
+
+    def adverb():
+        return
+
+    def noun():
+        return
+
+    def paragraph(pattern, length):
+        '''
+        pattern = 'random' mixes different patterns. 'something' specific pattern
+        '''
         return
