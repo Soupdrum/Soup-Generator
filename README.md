@@ -37,6 +37,8 @@ Or a random image file in any size `soupgenerator.SoupImage(1080, 720, 'images/i
 
 Since SoupImage is a random arangement of pixels, theres a possibility that you might get an image from the past, future or anything that could be in image form. Chances are, you wont ever see anything but static though.
 
+Complete documentation will be on [on the website](https://soupdrum.github.io/soup-generator/)
+
 ## 🚀 Deployment <a name = "deployment"></a>
 
 We're still doing a lot of testing, so currently the best way to deploy is to simply drop the soupgenerator.py file into your project file, make sure you add the csv files from /libs to your project also. </br> Then you just `import soupgenerator` 
