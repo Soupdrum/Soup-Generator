@@ -32,7 +32,10 @@ See [deployment](#deployment) for notes on how to deploy the project on any syst
 ## 🎈 Usage <a name="usage"></a>
 
 This is in early dev, so its still pretty straight forward. </br> See [deployment](#deployment), or get a 6 digit number using `soupgenerator.Text.number(6)` </br>
-Or a Noam Chomsky phrase structured phrase using `soupgenerator.Phrase.noam()`
+Or a Noam Chomsky phrase structured phrase using `soupgenerator.Phrase.noam()` </br>
+Or a random image file in any size `soupgenerator.SoupImage(1080, 720, 'images/image.png`)
+
+Since SoupImage is a random arangement of pixels, theres a possibility that you might get an image from the past, future or anything that could be in image form. Chances are, you wont ever see anything but static though.
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
