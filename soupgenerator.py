@@ -110,13 +110,79 @@ class Text:
             else:
                 val = str(random.choice(alphabets)).lower()
         return fixtext(val)
-    
+
+    def alphanumeric(length):
+        '''
+        length = how many letters to return
+        '''
+
+        val = ""
+        alphanumeric =  loadlibs("alphabet")
+
+        for i in range(10):
+            alphanumeric.append(i)
+
+        for i in range(length):
+            if i > 0:
+                lastval = val
+                val = lastval + str(random.choice(alphanumeric)) 
+            else:
+                val = str(random.choice(alphanumeric))
+            
+        return fixtext(val)
+
+    def word(length):
+        '''
+        length = how many words to return
+        '''
+        val = ""
+        adjectives = loadlibs("adjectives")
+        adverbs = loadlibs("adverbs")
+        nouns = loadlibs("nouns")
+        verbs = loadlibs("verbs")
+
+        words = adjectives + adverbs + nouns + verbs
+
+        for i in range(length):
+            if i > 0:
+                lastval = val
+                val = lastval + " " + str(random.choice(words)) 
+            else:
+                val = str(random.choice(words))
+        val = lastval + "."
+        return captext(val)
+
+class Phrase:
+
+    def noam():
+
+        val = ""
+        adjectives = loadlibs("adjectives")
+        adverbs = loadlibs("adverbs")
+        nouns = loadlibs("nouns")
+        verbs = loadlibs("verbs")
+
+        val = f'{random.choice(adjectives)} {random.choice(adjectives)} {random.choice(nouns)} {random.choice(verbs)}s {random.choice(adverbs)}. '
+
+        return captext(val)
+
 def fixtext(text):
+    '''
+    Format text
+    '''
     v1 = text.replace("'", "")
     v2 = v1.replace("[", "")
     v3 = v2.replace("]", "")
 
-    return v3.capitalize()
+    return v3
+
+def captext(text):
+    '''
+    Format and Capitalize text
+    '''
+    v = fixtext(text)
+
+    return v.capitalize()
 
 def loadlibs(filename):
     lib = []
@@ -126,27 +192,3 @@ def loadlibs(filename):
         for row in r:
             lib.append(row)
     return lib
-
-
-    def alphanumeric(self):
-        '''
-        length = how many letters to return
-        '''
-
-        val = ""
-        alphanumeric =  self.loadlists("alphabet")
-
-        for i in range(10):
-            alphanumeric.append(i)
-
-        for i in range(self.length):
-            if i > 0:
-                lastval = val
-                val = lastval + str(random.choice(alphanumeric)) 
-            else:
-                val = str(random.choice(alphanumeric))
-            
-        return val
-
-    def word():
-        return
