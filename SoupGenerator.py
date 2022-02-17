@@ -166,6 +166,33 @@ class Phrase:
 
         return captext(val)
 
+class SoupImage:
+    '''
+    dependencies: numpy
+
+    width, height = int
+
+    path = str
+
+    ---this will create a png file in the path you specify. that should make it compatible with whatever you need.---
+
+    example: 
+    
+    soupgenerator.SoupImage(400, 400, 'temp/image.png')
+    
+    and then you set the source of your tkinter or kivy or pyqt image as the generated image
+    '''
+    from PIL import Image as pil
+    import numpy as np
+
+    def __init__(self, width, height, path):
+        self.w = width
+        self.h = height
+        self.path = path
+        self.pixels = self.np.random.randint(255, size=(self.w, self.h), dtype=self.np.uint8)
+        img = self.pil.fromarray(self.pixels)
+        img.save(self.path)
+
 def fixtext(text):
     '''
     Format text
