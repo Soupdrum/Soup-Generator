@@ -3,56 +3,129 @@ Soup Generator generates content quickly for use wherever content needs to be.ad
 
 ------------------------------
 -----example
-soupgenerator.Text.number(4)
+soupgenerator.Text.noun(2)
 
 -----output
-8432
+Resistance mastoid
 
 ------------------------------
-
-
 
 '''
 import csv
 import random
 
-
 class Text:
-    '''
-    Text based content generation.
-    '''
 
-    def __init__(self, length):
-        self.length = int(length)
-
-
-    def number(self):
+    def number(length):
         '''
         length = how many numbers to return
         '''
 
         val = ""
 
-        for i in range(self.length):
+        for i in range(length):
             lastnum = val
             val = lastnum + str(random.randint(0,9))
 
         return str(val)
 
+    def noun(length):
+        '''
+        length = how many nouns to return
+        '''
+        length = length
+        val = ""
+        nouns = loadlibs("nouns")
 
-    def alphabet(self):
+        for i in range(length):
+            if i > 0:
+                lastval = val
+                val = lastval + " " + str(random.choice(nouns)).lower()
+            else:
+                val = str(random.choice(nouns)).lower()
+        return fixtext(val)
+
+    def adjective(length):
+        '''
+        length = how many adjectives to return
+        '''
+        length = length
+        val = ""
+        adjectives = loadlibs("adjectives")
+
+        for i in range(length):
+            if i > 0:
+                lastval = val
+                val = lastval + " " + str(random.choice(adjectives)).lower()
+            else:
+                val = str(random.choice(adjectives)).lower()
+        return fixtext(val)
+
+    def adverb(length):
+        '''
+        length = how many adverbs to return
+        '''
+        length = length
+        val = ""
+        adverbs = loadlibs("adverbs")
+
+        for i in range(length):
+            if i > 0:
+                lastval = val
+                val = lastval + " " + str(random.choice(adverbs)).lower()
+            else:
+                val = str(random.choice(adverbs)).lower()
+        return fixtext(val)
+
+    def verb(length):
+        '''
+        length = how many verbs to return
+        '''
+
+        length = length
+        val = ""
+        verbs = loadlibs("verbs")
+
+        for i in range(length):
+            if i > 0:
+                lastval = val
+                val = lastval + " " + str(random.choice(verbs)).lower()
+            else:
+                val = str(random.choice(verbs)).lower()
+        return fixtext(val)
+
+    def alphabet(length):
         '''
         length = how many letters to return
         '''
 
+        length = length
         val = ""
-        alphabet =  self.loadlists("alphabet")
+        alphabets = loadlibs("alphabet")
 
-        for i in range(self.length):
-            lastval = val
-            val = lastval + " " + str(random.choice(alphabet))
-        
-        return val
+        for i in range(length):
+            if i > 0:
+                lastval = val
+                val = lastval + " " + str(random.choice(alphabets)).lower()
+            else:
+                val = str(random.choice(alphabets)).lower()
+        return fixtext(val)
+    
+def fixtext(text):
+    v1 = text.replace("'", "")
+    v2 = v1.replace("[", "")
+    v3 = v2.replace("]", "")
+
+    return v3.capitalize()
+
+def loadlibs(filename):
+    lib = []
+    path = f'libs/{filename}.csv'
+    with open(path, "r") as f:
+        r = csv.reader(f)
+        for row in r:
+            lib.append(row)
+    return lib
 
 
     def alphanumeric(self):
@@ -75,64 +148,5 @@ class Text:
             
         return val
 
-
     def word():
         return
-
-
-    def adjective():
-        return
-
-
-    def adverb(self):
-        '''
-        length = how many adverbs to return
-        '''
-
-        val = ""
-        adverbs =  self.loadlists("adverbs")
-
-        for i in range(self.length):
-            if i > 0:
-                lastval = val
-                val = lastval + " " + str(random.choice(adverbs)).lower()
-            else:
-                val = str(random.choice(adverbs)).upper()
-            
-        return val
-
-
-    def noun(self):
-        '''
-        length = how many nouns to return
-        '''
-
-        val = ""
-        nouns = self.loadlists("nouns")
-
-        for i in range(self.length):
-            if i > 0:
-                lastval = val
-                val = lastval + " " + str(random.choice(nouns)).lower() 
-            else:
-                val = str(random.choice(nouns)).upper()
-            
-        return val
-        
-
-    def loadlists(self, name):
-        '''
-        not recommended to use this diretly in your code. most other methods call this automatically.
-        returns a list
-        '''
-
-        vals = []
-        path = f"libs/{name}.csv"
-
-        with open(path, "r") as f:
-            r = csv.reader(f)
-            for row in r:
-                vals.append(row)
-
-        return vals
-        
