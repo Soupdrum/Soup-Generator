@@ -31,7 +31,8 @@ See [deployment](#deployment) for notes on how to deploy the project on any syst
 
 ## 🎈 Usage <a name="usage"></a>
 
-This is in early dev, so its still pretty straight forward. </br> See [deployment](#deployment), and get a 6 digit number using `soupgenerator.Text.number(6)`
+This is in early dev, so its still pretty straight forward. </br> See [deployment](#deployment), or get a 6 digit number using `soupgenerator.Text.number(6)` </br>
+Or a Noam Chomsky phrase structured phrase using `soupgenerator.Phrase.noam()`
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
