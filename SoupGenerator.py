@@ -35,7 +35,7 @@ class Text:
         '''
         length = length
         val = ""
-        nouns = loadlibs("nouns")
+        nouns = __loadlibs("nouns")
 
         for i in range(length):
             if i > 0:
@@ -43,7 +43,7 @@ class Text:
                 val = lastval + " " + str(random.choice(nouns)).lower()
             else:
                 val = str(random.choice(nouns)).lower()
-        return fixtext(val)
+        return __fixtext(val)
 
     def adjective(length):
         '''
@@ -51,7 +51,7 @@ class Text:
         '''
         length = length
         val = ""
-        adjectives = loadlibs("adjectives")
+        adjectives = __loadlibs("adjectives")
 
         for i in range(length):
             if i > 0:
@@ -59,7 +59,7 @@ class Text:
                 val = lastval + " " + str(random.choice(adjectives)).lower()
             else:
                 val = str(random.choice(adjectives)).lower()
-        return fixtext(val)
+        return __fixtext(val)
 
     def adverb(length):
         '''
@@ -67,7 +67,7 @@ class Text:
         '''
         length = length
         val = ""
-        adverbs = loadlibs("adverbs")
+        adverbs = __loadlibs("adverbs")
 
         for i in range(length):
             if i > 0:
@@ -75,7 +75,7 @@ class Text:
                 val = lastval + " " + str(random.choice(adverbs)).lower()
             else:
                 val = str(random.choice(adverbs)).lower()
-        return fixtext(val)
+        return __fixtext(val)
 
     def verb(length):
         '''
@@ -84,7 +84,7 @@ class Text:
 
         length = length
         val = ""
-        verbs = loadlibs("verbs")
+        verbs = __loadlibs("verbs")
 
         for i in range(length):
             if i > 0:
@@ -92,7 +92,7 @@ class Text:
                 val = lastval + " " + str(random.choice(verbs)).lower()
             else:
                 val = str(random.choice(verbs)).lower()
-        return fixtext(val)
+        return __fixtext(val)
 
     def alphabet(length):
         '''
@@ -101,7 +101,7 @@ class Text:
 
         length = length
         val = ""
-        alphabets = loadlibs("alphabet")
+        alphabets = __loadlibs("alphabet")
 
         for i in range(length):
             if i > 0:
@@ -109,7 +109,7 @@ class Text:
                 val = lastval + " " + str(random.choice(alphabets)).lower()
             else:
                 val = str(random.choice(alphabets)).lower()
-        return fixtext(val)
+        return __fixtext(val)
 
     def alphanumeric(length):
         '''
@@ -117,7 +117,7 @@ class Text:
         '''
 
         val = ""
-        alphanumeric =  loadlibs("alphabet")
+        alphanumeric =  __loadlibs("alphabet")
 
         for i in range(10):
             alphanumeric.append(i)
@@ -129,17 +129,17 @@ class Text:
             else:
                 val = str(random.choice(alphanumeric))
             
-        return fixtext(val)
+        return __fixtext(val)
 
     def word(length):
         '''
         length = how many words to return
         '''
         val = ""
-        adjectives = loadlibs("adjectives")
-        adverbs = loadlibs("adverbs")
-        nouns = loadlibs("nouns")
-        verbs = loadlibs("verbs")
+        adjectives = __loadlibs("adjectives")
+        adverbs = __loadlibs("adverbs")
+        nouns = __loadlibs("nouns")
+        verbs = __loadlibs("verbs")
 
         words = adjectives + adverbs + nouns + verbs
 
@@ -150,21 +150,20 @@ class Text:
             else:
                 val = str(random.choice(words))
         val = lastval + "."
-        return captext(val)
+        return __captext(val)
 
 class Phrase:
 
     def noam():
-
         val = ""
-        adjectives = loadlibs("adjectives")
-        adverbs = loadlibs("adverbs")
-        nouns = loadlibs("nouns")
-        verbs = loadlibs("verbs")
+        adjectives = __loadlibs("adjectives")
+        adverbs = __loadlibs("adverbs")
+        nouns = __loadlibs("nouns")
+        verbs = __loadlibs("verbs")
 
         val = f'{random.choice(adjectives)} {random.choice(adjectives)} {random.choice(nouns)} {random.choice(verbs)}s {random.choice(adverbs)}. '
 
-        return captext(val)
+        return __captext(val)
 
 class SoupImage:
     '''
@@ -193,25 +192,21 @@ class SoupImage:
         img = self.pil.fromarray(self.pixels)
         img.save(self.path)
 
-def fixtext(text):
-    '''
-    Format text
-    '''
+
+# stuff
+def __fixtext(text):
+    ''' Format text '''
     v1 = text.replace("'", "")
     v2 = v1.replace("[", "")
     v3 = v2.replace("]", "")
-
     return v3
 
-def captext(text):
-    '''
-    Format and Capitalize text
-    '''
-    v = fixtext(text)
-
+def __captext(text):
+    ''' Format and Capitalize text '''
+    v = __fixtext(text)
     return v.capitalize()
 
-def loadlibs(filename):
+def __loadlibs(filename):
     lib = []
     path = f'libs/{filename}.csv'
     with open(path, "r") as f:
