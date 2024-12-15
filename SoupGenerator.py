@@ -4,6 +4,10 @@ from typing import List
 from pathlib import Path
 from PIL import Image as PILImage
 import numpy as np
+import wave
+import datetime
+import string
+import re
 
 
 def fix_text(text: str) -> str:
@@ -136,6 +140,41 @@ class TextGenerator:
         verbs = LibraryLoader.load_lib("verbs")
         return fix_text(" ".join(random.choice(verbs).lower() for _ in range(length)))
 
+    def phone(self) -> str:
+        """
+        Generates a random US phone number.
+        
+        Returns:
+            str: A formatted US phone number.
+        """
+        area_code = random.randint(100, 999)
+        central_office_code = random.randint(100, 999)
+        line_number = random.randint(1000, 9999)
+        return f"({area_code}) {central_office_code}-{line_number}"
+
+    def credit_card(self) -> str:
+        """
+        Generates a random credit card number (for testing only!).
+        
+        Returns:
+            str: A formatted credit card number.
+        """
+        prefix = random.choice(['4', '5', '37', '6'])  # Common card prefixes
+        length = 16 if prefix != '37' else 15
+        number = prefix + ''.join([str(random.randint(0, 9)) for _ in range(length - len(prefix))])
+        return ' '.join(number[i:i+4] for i in range(0, len(number), 4))
+
+    def url(self) -> str:
+        """
+        Generates a random URL.
+        
+        Returns:
+            str: A formatted URL.
+        """
+        protocols = ['http', 'https']
+        domains = ['example.com', 'test.com', 'demo.com']
+        return f"{random.choice(protocols)}://{self.noun(1).lower()}.{random.choice(domains)}"
+
     def alphabet(self, length: int) -> str:
         """
         Generates a string of random alphabet characters.
@@ -178,6 +217,54 @@ class TextGenerator:
         verbs = LibraryLoader.load_lib("verbs")
         words = adjectives + adverbs + nouns + verbs
         return cap_text(" ".join(random.choice(words) for _ in range(length)) + ".")
+
+    def address(self) -> str:
+        """
+        Generates a random address.
+        
+        Returns:
+            str: A formatted address.
+        """
+        street_types = ['St', 'Ave', 'Blvd', 'Rd', 'Lane', 'Drive']
+        return f"{self.number(random.randint(1, 999))} {self.noun(1).title()} {random.choice(street_types)}"
+
+    def company(self) -> str:
+        """
+        Generates a random company name.
+        
+        Returns:
+            str: A formatted company name.
+        """
+        suffixes = ['Inc', 'LLC', 'Corp', 'Solutions', 'Technologies']
+        return f"{self.noun(1).title()} {random.choice(suffixes)}"
+
+    def hashtag(self, count: int = 1) -> str:
+        """
+        Generate trending-style hashtags
+        """
+        tags = []
+        for _ in range(count):
+            words = [self.noun(1), self.adjective(1)]
+            random.shuffle(words)
+            tag = ''.join(word.title() for word in ' '.join(words).split())
+            tags.append(f"#{tag}")
+        return ' '.join(tags)
+
+    def emoji(self, count: int = 1) -> str:
+        """
+        Generate random emojis
+        """
+        emojis = ['😀', '😎', '🔥', '💡', '🚀', '💻', '🎮', '📱', '🎨', '🎯']
+        return ''.join(random.sample(emojis, min(count, len(emojis))))
+    
+    def filename(self, extension: str = None) -> str:
+        """
+        Generate random filename
+        """
+        if not extension:
+            extension = random.choice(['.txt', '.pdf', '.doc', '.jpg', '.png'])
+        name = self.alphanumeric(8).lower()
+        return f"{name}{extension}"
 
 
 class PhraseGenerator:
@@ -274,40 +361,289 @@ class SoupImageRGB:
         self.pixels = np.random.randint(0, 256, size=(self.height, self.width, 3), dtype=np.uint8)
         img = PILImage.fromarray(self.pixels, 'RGB')
         img.save(self.path)
-        print(f"RGB image saved to {self.path}")
-
-    def show(self):
-        """
-        Displays the generated RGB image.
-        """
-        img = PILImage.fromarray(self.pixels, 'RGB')
-        img.show()
 
 
-class AudioGenerator:
+class Audio:
     """
-    Placeholder for audio generation functionalities.
+    Generate various audio content
+    dependencies: numpy
     """
     
-    def wav(self, duration: float = 1.0, freq: float = 440.0, path: str = "output.wav"):
+    def wav(self, duration=1.0, sample_rate=44100, filepath=None):
         """
-        Generates a simple WAV file with a sine wave.
+        Generate random WAV audio data
+        duration: length in seconds
+        sample_rate: samples per second
+        filepath: optional path to save the WAV file
+        """
+        samples = int(duration * sample_rate)
+        audio_data = np.random.uniform(-1, 1, samples)
+        data = (audio_data * 32767).astype(np.int16)
         
-        Args:
-            duration (float): Duration of the audio in seconds.
-            freq (float): Frequency of the sine wave.
-            path (str): File path to save the WAV file.
-        """
-        import wave
-        import struct
+        if filepath:
+            with wave.open(filepath, 'wb') as wav_file:
+                wav_file.setnchannels(1)
+                wav_file.setsampwidth(2)
+                wav_file.setframerate(sample_rate)
+                wav_file.writeframes(data.tobytes())
+        
+        return data
 
-        sample_rate = 44100
-        amplitude = 32767
-        n_samples = int(sample_rate * duration)
-        with wave.open(path, 'w') as wav_file:
-            wav_file.setparams((1, 2, sample_rate, n_samples, 'NONE', 'not compressed'))
-            for i in range(n_samples):
-                value = int(amplitude * np.sin(2 * np.pi * freq * (i / sample_rate)))
-                data = struct.pack('<h', value)
-                wav_file.writeframesraw(data)
-        print(f"WAV audio saved to {path}")
+    def tone(self, frequency=440, duration=1.0, sample_rate=44100, filepath=None):
+        """
+        Generate a pure tone
+        frequency: in Hz
+        """
+        t = np.linspace(0, duration, int(sample_rate * duration))
+        audio_data = np.sin(2 * np.pi * frequency * t)
+        data = (audio_data * 32767).astype(np.int16)
+        
+        if filepath:
+            with wave.open(filepath, 'wb') as wav_file:
+                wav_file.setnchannels(1)
+                wav_file.setsampwidth(2)
+                wav_file.setframerate(sample_rate)
+                wav_file.writeframes(data.tobytes())
+        
+        return data
+
+
+class DataGenerator:
+    """
+    Generate structured data
+    """
+    
+    def __init__(self):
+        self.text = TextGenerator()
+        self.phrase = PhraseGenerator()
+
+    def person(self):
+        """
+        Generate random person data
+        """
+        return {
+            "id": self.text.alphanumeric(8),
+            "name": f"{self.text.noun(1).title()} {self.text.noun(1).title()}",
+            "age": random.randint(18, 80),
+            "email": f"{self.text.alphanumeric(8)}@example.com",
+            "bio": self.phrase.noam(),
+            "phone": self.text.phone(),
+            "address": self.text.address()
+        }
+
+    def product(self):
+        """
+        Generate random product data
+        """
+        return {
+            "id": self.text.alphanumeric(6),
+            "name": f"{self.text.adjective(1)} {self.text.noun(1)}",
+            "price": round(random.uniform(1.0, 999.99), 2),
+            "description": self.phrase.noam(),
+            "in_stock": random.choice([True, False]),
+            "company": self.text.company()
+        }
+
+
+class SoupPattern(SoupImageRGB):
+    """
+    Generate patterned images
+    """
+    
+    def __init__(self, width, height, path, pattern_type='checker'):
+        self.width = width
+        self.height = height
+        self.path = path
+        
+        if pattern_type == 'checker':
+            self.pixels = self._checker_pattern()
+        elif pattern_type == 'gradient':
+            self.pixels = self._gradient_pattern()
+        else:
+            self.pixels = self._noise_pattern()
+            
+        img = PILImage.fromarray(self.pixels, 'RGB')
+        img.save(self.path)
+
+    def _checker_pattern(self, size=32):
+        pattern = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+        for i in range(0, self.height, size):
+            for j in range(0, self.width, size):
+                if (i//size + j//size) % 2:
+                    pattern[i:i+size, j:j+size] = np.random.randint(0, 256, (3,))
+        return pattern
+
+    def _gradient_pattern(self):
+        pattern = np.zeros((self.height, self.width, 3), dtype=np.uint8)
+        for i in range(self.height):
+            for j in range(self.width):
+                pattern[i,j] = [
+                    int(255 * i/self.height),
+                    int(255 * j/self.width),
+                    int(255 * (i+j)/(self.height+self.width))
+                ]
+        return pattern
+
+    def _noise_pattern(self):
+        return np.random.randint(0, 256, (self.height, self.width, 3), dtype=np.uint8)
+
+
+class CodeGenerator:
+    """
+    Generate code snippets
+    """
+    
+    def __init__(self):
+        self.text = TextGenerator()
+
+    def html(self):
+        """
+        Generate random HTML snippet
+        """
+        tags = ['div', 'p', 'span', 'section']
+        classes = [self.text.noun(1), self.text.adjective(1)]
+        tag = random.choice(tags)
+        return f'<{tag} class="{"-".join(classes)}">{self.text.word(5)}</{tag}>'
+
+    def sql(self):
+        """
+        Generate random SQL query
+        """
+        tables = ['users', 'products', 'orders']
+        conditions = ['active = 1', 'created_at > NOW()', 'status = "pending"']
+        return f'SELECT * FROM {random.choice(tables)} WHERE {random.choice(conditions)} LIMIT {random.randint(10,100)};'
+
+    def css(self) -> str:
+        """Generate random CSS rule"""
+        properties = {
+            'color': f'#{random.randint(0, 0xFFFFFF):06x}',
+            'margin': f'{random.randint(0, 30)}px',
+            'padding': f'{random.randint(0, 20)}px',
+            'font-size': f'{random.randint(12, 24)}px',
+            'border-radius': f'{random.randint(0, 10)}px'
+        }
+        
+        selector = f'.{self.text.noun(1)}'
+        props = [f"    {k}: {v};" for k, v in random.sample(properties.items(), 3)]
+        return f"{selector} {{\n" + "\n".join(props) + "\n}"
+
+    def javascript(self) -> str:
+        """Generate random JavaScript code"""
+        function_name = f"handle{self.text.noun(1).title()}"
+        param = self.text.noun(1).lower()
+        return f"""function {function_name}({param}) {{
+    console.log('Processing {param}...');
+    return {param}.toString().toUpperCase();
+}}"""
+
+
+class TimeGenerator:
+    """
+    Generate time-related content
+    """
+    
+    def date(self, start_year=2000, end_year=2024):
+        """
+        Generate random date
+        """
+        start = datetime.date(start_year, 1, 1)
+        end = datetime.date(end_year, 12, 31)
+        days_between = (end - start).days
+        random_days = random.randint(0, days_between)
+        return start + datetime.timedelta(days=random_days)
+
+    def timestamp(self):
+        """
+        Generate random timestamp
+        """
+        return self.date().strftime("%Y-%m-%d %H:%M:%S")
+
+
+class SocialMediaGenerator:
+    """Generate social media style content"""
+    
+    def __init__(self):
+        self.text = TextGenerator()
+        self.phrase = PhraseGenerator()
+
+    def tweet(self) -> str:
+        """Generate a tweet-like message"""
+        content = self.phrase.noam()
+        hashtags = self.text.hashtag(2)
+        emoji = self.text.emoji(1)
+        return f"{content} {hashtags} {emoji}"
+    
+    def comment(self) -> str:
+        """Generate a social media comment"""
+        patterns = [
+            lambda: f"{self.text.emoji(1)} {self.text.word(random.randint(3,8))}",
+            lambda: f"This is {self.text.adjective(1)}! {self.text.emoji(2)}",
+            lambda: f"{self.text.hashtag(1)} {self.text.emoji(1)}"
+        ]
+        return random.choice(patterns)()
+
+    def username_with_handle(self) -> str:
+        """Generate username with handle"""
+        return f"@{self.text.username()}"
+
+
+class FileGenerator:
+    """Generate various file contents"""
+    
+    def __init__(self):
+        self.text = TextGenerator()
+        self.data = DataGenerator()
+
+    def csv_data(self, rows: int = 5) -> str:
+        """Generate CSV content"""
+        headers = ['id', 'name', 'email', 'status']
+        content = [','.join(headers)]
+        
+        for _ in range(rows):
+            row = [
+                self.text.alphanumeric(6),
+                f"{self.text.noun(1)} {self.text.noun(1)}",
+                f"{self.text.alphanumeric(8)}@example.com",
+                random.choice(['active', 'pending', 'inactive'])
+            ]
+            content.append(','.join(row))
+        
+        return '\n'.join(content)
+
+    def log_entry(self) -> str:
+        """Generate a log file entry"""
+        levels = ['INFO', 'WARNING', 'ERROR', 'DEBUG']
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        return f"{timestamp} [{random.choice(levels)}] {self.text.word(random.randint(5,10))}"
+
+    def config_ini(self) -> str:
+        """Generate INI configuration file content"""
+        sections = {
+            'database': {
+                'host': 'localhost',
+                'port': str(random.randint(3000, 9999)),
+                'username': self.text.username(),
+                'password': self.text.alphanumeric(12)
+            },
+            'api': {
+                'key': self.text.alphanumeric(32),
+                'timeout': str(random.randint(30, 300)),
+                'retry_limit': str(random.randint(1, 5))
+            }
+        }
+        
+        content = []
+        for section, values in sections.items():
+            content.append(f"[{section}]")
+            content.extend(f"{k} = {v}" for k, v in values.items())
+            content.append("")
+        
+        return '\n'.join(content)
+
+
+if __name__ == "__main__":
+    text_gen = TextGenerator()
+    print(text_gen.verb(2))
+
+    phrase_gen = PhraseGenerator()
+    print(phrase_gen.noam())

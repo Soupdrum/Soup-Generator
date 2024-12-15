@@ -18,9 +18,13 @@ SoupGenerator is a versatile Python module for generating various types of test 
 - **Text Generation**
   - Generate words, sentences, and paragraphs
   - Create usernames and email addresses
+  - Generate random phone numbers and credit card numbers
+  - Generate random URLs
   - Generate random IP addresses and dates
   - Create hex color codes and MAC addresses
   - Generate file paths and secure passwords
+  - Generate random addresses
+  - Generate random company names
 - **Structured Data**
   - Generate random person profiles
   - Create product information
@@ -30,8 +34,7 @@ SoupGenerator is a versatile Python module for generating various types of test 
   - Generate patterned images (checkers, gradients)
   - Audio generation (noise, tones, chords)
 - **Code Generation**
-  - Generate HTML elements, CSS rules, and Python functions
-  - Create random SQL queries
+  - Generate HTML elements and SQL queries
 - **Markdown Generation**
   - Generate markdown documents and tables
 - **Configuration Files**
