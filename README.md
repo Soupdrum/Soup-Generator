@@ -1,43 +1,50 @@
 <h1 align="center">Soup Generator</h1>
-<p align="center"> Python Module for filler content creation
+<p align="center">Python Module for Comprehensive Content Generation
     <br> 
 </p>
 
 ## 📝 Table of Contents
-
 - [About](#about)
-- [TODO](#todo)
+- [Features](#features)
 - [Getting Started](#getting_started)
-- [Deployment](#deployment)
 - [Usage](#usage)
 - [Built Using](#built_using)
 - [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about"></a>
+SoupGenerator is a versatile Python module for generating various types of test and filler content. Perfect for developers who need quick, realistic-looking data for testing and development.
 
-This module is still in developement, but will ease the process of creating filler content to help developers build and test their programs. 
-
-## TODO <a name = "todo"></a>
-- Method to **create paragraphs** using different phrase structuring
-- Method to incorporate various **code injection** (sql, bash, etc) techniques for vuln testing (*no malicious injections included*)
-- Method to **create random JPG** using numpy arrays, with specifiable size
-- Method to **create binary and bytecode** which can be interpreted without error
+## ✨ Features <a name = "features"></a>
+- **Text Generation**
+  - Generate words, sentences, and paragraphs
+  - Create usernames and email addresses
+  - Generate random IP addresses and dates
+  - Create hex color codes and MAC addresses
+  - Generate file paths and secure passwords
+- **Structured Data**
+  - Generate random person profiles
+  - Create product information
+  - Generate JSON data files
+- **Media Generation**
+  - Create random images (grayscale and RGB)
+  - Generate patterned images (checkers, gradients)
+  - Audio generation (noise, tones, chords)
+- **Code Generation**
+  - Generate HTML elements, CSS rules, and Python functions
+  - Create random SQL queries
+- **Markdown Generation**
+  - Generate markdown documents and tables
+- **Configuration Files**
+  - Create random INI and .env configuration files
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
-
-See [deployment](#deployment) for notes on how to deploy the project on any system.
-
+1. Copy `soupgenerator.py` to your project.
+2. Add the required CSV files from the `/libs` directory.
+3. Install dependencies: `pip install numpy Pillow`.
+4. Import and use: `import soupgenerator`.
 
 ## 🎈 Usage <a name="usage"></a>
-
-This is in early dev, so its still pretty straight forward. </br> See [deployment](#deployment), or get a 6 digit number using `soupgenerator.Text.number(6)` </br>
-Or a Noam Chomsky phrase structured phrase using `soupgenerator.Phrase.noam()` </br>
-Or a random image file in any size `soupgenerator.SoupImage(1080, 720, 'images/image.png`)
-
-Since SoupImage is a random arangement of pixels, theres a possibility that you might get an image from the past, future or anything that could be in image form. Chances are, you wont ever see anything but static though.
-
-Complete documentation will be on [on the website](https://soupdrum.github.io/soup-generator/)
+Here are some examples of how to use the SoupGenerator module:
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
