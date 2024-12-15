@@ -57,10 +57,6 @@ We're still doing a lot of testing, so currently the best way to deploy is to si
 
 - Python
 
-## ✍️ Authors <a name = "authors"></a>
-
-- [@FurtivePhallus](https://github.com/FurtivePhallus) - Idea & Initial work
-
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
 - Thanks to everyone ever
